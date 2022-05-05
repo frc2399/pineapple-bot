@@ -4,8 +4,7 @@ package frc.robot;
 // import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.CANSparkMax;
+
 
 //import frc.robot.Robot;
 import frc.robot.Constants.DriveConstants;
@@ -28,7 +27,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // import edu.wpi.first.wpilibj.simulation.EncoderSim;
 // import edu.wpi.first.wpilibj.simulation.AnalogGyroSim;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
+
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 //import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
 
 
 
@@ -39,12 +42,10 @@ import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
  */
 public class DriveTrain extends SubsystemBase {
 
-    private static CANSparkMax leftFrontMotorController;
-    public static CANSparkMax rightFrontMotorController;
-    private static CANSparkMax leftMiddleMotorController;
-    private static CANSparkMax rightMiddleMotorController;
-    private static CANSparkMax leftBackMotorController;
-    private static CANSparkMax rightBackMotorController;
+    public static WPI_VictorSPX leftFrontMotorController;
+    private static WPI_VictorSPX rightFrontMotorController;
+    private static WPI_VictorSPX leftBackMotorController;
+    private static WPI_VictorSPX rightBackMotorController;
 
    
     public static PIDController turnController;
@@ -88,23 +89,19 @@ public class DriveTrain extends SubsystemBase {
 
     public DriveTrain() {
 
-        leftFrontMotorController = new CANSparkMax(DriveConstants.LEFT_FRONT_MOTOR_ID, MotorType.kBrushless);
-        rightFrontMotorController = new CANSparkMax(DriveConstants.RIGHT_FRONT_MOTOR_ID, MotorType.kBrushless);
-        leftMiddleMotorController = new CANSparkMax(DriveConstants.LEFT_MIDDLE_MOTOR_ID, MotorType.kBrushless);
-        rightMiddleMotorController = new CANSparkMax(DriveConstants.RIGHT_MIDDLE_MOTOR_ID, MotorType.kBrushless);
-        leftBackMotorController = new CANSparkMax(DriveConstants.LEFT_BACK_MOTOR_ID, MotorType.kBrushless);
-        rightBackMotorController = new CANSparkMax(DriveConstants.RIGHT_BACK_MOTOR_ID, MotorType.kBrushless);
+        leftFrontMotorController = new WPI_VictorSPX(DriveConstants.LEFT_FRONT_MOTOR_ID);
+        rightFrontMotorController = new WPI_VictorSPX(DriveConstants.RIGHT_FRONT_MOTOR_ID);
+        leftBackMotorController = new WPI_VictorSPX(DriveConstants.LEFT_BACK_MOTOR_ID);
+        rightBackMotorController = new WPI_VictorSPX(DriveConstants.RIGHT_BACK_MOTOR_ID);
 
         // Set motors to coast mode
-        teleopInit();
+        //teleopInit();
 
         // Make wheels go in same direction
         leftFrontMotorController.setInverted(true);
         rightFrontMotorController.setInverted(false);
 
         //sets motor controllers following leaders
-        leftMiddleMotorController.follow(leftFrontMotorController);
-        rightMiddleMotorController.follow(rightFrontMotorController);
         leftBackMotorController.follow(leftFrontMotorController);
         rightBackMotorController.follow(rightFrontMotorController);
 
@@ -197,26 +194,30 @@ public class DriveTrain extends SubsystemBase {
         // SmartDashboard.putNumber("outputSpeed", leftSpeed);
     }
 
-
     public static void teleopInit()
     {
-        leftFrontMotorController.setIdleMode(CANSparkMax.IdleMode.kCoast);
-        rightFrontMotorController.setIdleMode(CANSparkMax.IdleMode.kCoast);
-        leftMiddleMotorController.setIdleMode(CANSparkMax.IdleMode.kCoast);
-        rightMiddleMotorController.setIdleMode(CANSparkMax.IdleMode.kCoast);
-        leftBackMotorController.setIdleMode(CANSparkMax.IdleMode.kCoast);
-        rightBackMotorController.setIdleMode(CANSparkMax.IdleMode.kCoast);
+        leftFrontMotorController.setNeutralMode(NeutralMode.Coast);
+        rightFrontMotorController.setNeutralMode(NeutralMode.Coast);        
+        leftBackMotorController.setNeutralMode(NeutralMode.Coast);
+        rightBackMotorController.setNeutralMode(NeutralMode.Coast);
     }
 
-    public static void autonomousInit()
-    {
-        leftFrontMotorController.setIdleMode(CANSparkMax.IdleMode.kBrake);
-        rightFrontMotorController.setIdleMode(CANSparkMax.IdleMode.kBrake);
-        leftMiddleMotorController.setIdleMode(CANSparkMax.IdleMode.kBrake);
-        rightMiddleMotorController.setIdleMode(CANSparkMax.IdleMode.kBrake);
-        leftBackMotorController.setIdleMode(CANSparkMax.IdleMode.kBrake);
-        rightBackMotorController.setIdleMode(CANSparkMax.IdleMode.kBrake);
-    }
+
+    // public static void teleopInit()
+    // {
+    //     leftFrontMotorController.setIdleMode(CANSparkMax.IdleMode.kCoast);
+    //     rightFrontMotorController.setIdleMode(CANSparkMax.IdleMode.kCoast);
+    //     leftBackMotorController.setIdleMode(CANSparkMax.IdleMode.kCoast);
+    //     rightBackMotorController.setIdleMode(CANSparkMax.IdleMode.kCoast);
+    // }
+
+    // public static void autonomousInit()
+    // {
+    //     leftFrontMotorController.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    //     rightFrontMotorController.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    //     leftBackMotorController.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    //     rightBackMotorController.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    // }
 
 
 }
