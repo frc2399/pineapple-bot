@@ -11,12 +11,10 @@ package frc.robot;
 public class Constants {
     public static final class DriveConstants {
         // motor ids
-        public static final int RIGHT_FRONT_MOTOR_ID = 3;
-        public static final int RIGHT_MIDDLE_MOTOR_ID = 4;
-        public static final int RIGHT_BACK_MOTOR_ID = 5;
-        public static final int LEFT_FRONT_MOTOR_ID = 6;
-        public static final int LEFT_MIDDLE_MOTOR_ID = 7;
-        public static final int LEFT_BACK_MOTOR_ID = 8;
+        public static final int RIGHT_FRONT_MOTOR_ID = 1;
+        public static final int RIGHT_BACK_MOTOR_ID = 2;
+        public static final int LEFT_FRONT_MOTOR_ID = 4;
+        public static final int LEFT_BACK_MOTOR_ID = 3;
 
         //solenoids
         public static final int SHIFT_HIGH_SPEED_SOLENOID_PORT = 0;

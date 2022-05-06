@@ -1,6 +1,6 @@
 package frc.robot;
 
-import edu.wpi.first.cameraserver.CameraServer;
+//import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.util.net.PortForwarder;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -87,10 +87,10 @@ public class RobotContainer {
         PortForwarder.add(5805, "10.23.99.11", 5805);
         
         // camera not in simulator to make it not crash
-        if (RobotBase.isReal())
-        {
-            CameraServer.startAutomaticCapture();
-        }
+        // if (RobotBase.isReal())
+        // {
+        //     CameraServer.startAutomaticCapture();
+        // }
 
 
         // Smart Dashboard

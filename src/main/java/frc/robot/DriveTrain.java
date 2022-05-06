@@ -102,7 +102,7 @@ public class DriveTrain extends SubsystemBase {
         rightFrontMotorController.setInverted(false);
 
         //sets motor controllers following leaders
-        leftBackMotorController.follow(leftFrontMotorController);
+        //leftBackMotorController.follow(leftFrontMotorController);
         rightBackMotorController.follow(rightFrontMotorController);
 
         //myRobot = new DifferentialDrive(leftFrontMotorController, rightFrontMotorControllefr);
@@ -188,8 +188,11 @@ public class DriveTrain extends SubsystemBase {
 
     public void setMotors(double leftSpeed, double rightSpeed) {
 
-        leftFrontMotorController.set(leftSpeed);
-        rightFrontMotorController.set(rightSpeed);
+        leftFrontMotorController.set(-leftSpeed);
+        rightFrontMotorController.set(-rightSpeed);
+        leftBackMotorController.set(leftSpeed);
+        System.out.println(leftSpeed);
+        System.out.println(rightSpeed);
 
         // SmartDashboard.putNumber("outputSpeed", leftSpeed);
     }
