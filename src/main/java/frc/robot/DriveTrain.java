@@ -199,10 +199,10 @@ public class DriveTrain extends SubsystemBase {
 
     public static void teleopInit()
     {
-        leftFrontMotorController.setNeutralMode(NeutralMode.Coast);
-        rightFrontMotorController.setNeutralMode(NeutralMode.Coast);        
-        leftBackMotorController.setNeutralMode(NeutralMode.Coast);
-        rightBackMotorController.setNeutralMode(NeutralMode.Coast);
+        leftFrontMotorController.setNeutralMode(NeutralMode.Brake);
+        rightFrontMotorController.setNeutralMode(NeutralMode.Brake);        
+        leftBackMotorController.setNeutralMode(NeutralMode.Brake);
+        rightBackMotorController.setNeutralMode(NeutralMode.Brake);
     }
 
 
