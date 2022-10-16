@@ -32,8 +32,8 @@ public class DriveTurnControls {
         driveLimiter.calculate(val);
 
         // altering driving joystick sensitivity
-        double a = RobotContainer.a_value.getDouble(0.0);
-        val = ((1 - a) * val) + (a * Math.pow(val, 3));
+        double a = DriveConstants.TURN_SENSITIVITY;
+        val = ((1 - a) * val) + (a * Math.pow(val, 1));
 
         return val;
     }
@@ -48,7 +48,7 @@ public class DriveTurnControls {
         val = val * XboxConstants.TURN_JOYSTICK_INVERT;
 
         double a = DriveConstants.TURN_SENSITIVITY;
-        val = ((1 - a) * val) + (a * Math.pow(val, 3));
+        val = ((1 - a) * val) + (a * Math.pow(val, 1));
      
         driveLimiter.calculate(val);
         // val = Math.pow(val, 3);

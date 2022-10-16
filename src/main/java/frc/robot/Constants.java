@@ -19,7 +19,7 @@ public class Constants {
         // No turning sensitivity
         public static final double MAX_TURN_SPEED = 1;
 
-        public static final double TURN_SENSITIVITY = 0;
+        public static final double TURN_SENSITIVITY = 1;
 
     }
 
