@@ -210,8 +210,7 @@ public class Constants {
         public static final double TARGET_HEIGHT_INCHES = 104;
         public static final double HUB_RADIUS_INCHES = 27;
         public static final double TILT_DEGREES = 36;
-        // public static final double CAMERA_PITCH_RADIANS = Units.degreesToRadians(0);
-        // public static final double GOAL_RANGE_METERS = Units.feetToMeters(3);
+
     }
 }
 

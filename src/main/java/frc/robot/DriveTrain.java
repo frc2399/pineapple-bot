@@ -1,43 +1,23 @@
 package frc.robot;
 
-// import frc.robot.commands.*;
-// import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-
-
-//import frc.robot.Robot;
-import frc.robot.Constants.DriveConstants;
-
-//import edu.wpi.first.wpilibj.Joystick;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.networktables.NetworkTableEntry;
-// import edu.wpi.first.math.MathUtil;
-// import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-//import frc.robot.util.NavX;
-// import edu.wpi.first.wpilibj.simulation.EncoderSim;
-// import edu.wpi.first.wpilibj.simulation.AnalogGyroSim;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
-
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-//import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-
-
-
-
-
+import frc.robot.Constants.DriveConstants;
 
 /**
+ here's the drive train class that operates the drive train
  *
  */
 public class DriveTrain extends SubsystemBase {
@@ -46,21 +26,12 @@ public class DriveTrain extends SubsystemBase {
     private static WPI_VictorSPX rightFrontMotorController;
     private static WPI_VictorSPX leftBackMotorController;
     private static WPI_VictorSPX rightBackMotorController;
-
-   
     public static PIDController turnController;
-    //public static DifferentialDrive myRobot;
-    //double rotateToAngleRate;
-
-
     public final double kP = 0.06;
     public final double kPSim = 0.5;
     static final double kI = 0;
     static final double kD = 0;
     static final double kF = 0;
-
-    //private static double currentAngle = 0;
-    //private static double targetAngle = 0;
     public static double outputSpeed;
 
     
@@ -70,12 +41,8 @@ public class DriveTrain extends SubsystemBase {
     */
 
     private DifferentialDriveOdometry odometry;
-
-
     private DifferentialDrivetrainSim driveSim;
     private Field2d field = new Field2d();
-
-
     final ShuffleboardTab tab = Shuffleboard.getTab("Motor Diag");
     public static final NetworkTableEntry angleErrorTolerance = Shuffleboard.getTab("Params").addPersistent("Angle Err Tol", 2).getEntry();
     public static final NetworkTableEntry distanceErrorTolerance = Shuffleboard.getTab("Params").addPersistent("Distance Err Tol", 5).getEntry();
@@ -84,28 +51,18 @@ public class DriveTrain extends SubsystemBase {
     public static final NetworkTableEntry encoderTickLeft = Shuffleboard.getTab("Testing").add("tick left", 0).getEntry();
     public static final NetworkTableEntry encoderTickRight = Shuffleboard.getTab("Testing").add("tick right", 0).getEntry();
 
-
-
-
     public DriveTrain() {
 
         leftFrontMotorController = new WPI_VictorSPX(DriveConstants.LEFT_FRONT_MOTOR_ID);
         rightFrontMotorController = new WPI_VictorSPX(DriveConstants.RIGHT_FRONT_MOTOR_ID);
         leftBackMotorController = new WPI_VictorSPX(DriveConstants.LEFT_BACK_MOTOR_ID);
         rightBackMotorController = new WPI_VictorSPX(DriveConstants.RIGHT_BACK_MOTOR_ID);
-
-        // Set motors to coast mode
-        //teleopInit();
-
-        // Make wheels go in same direction
         leftFrontMotorController.setInverted(true);
         rightFrontMotorController.setInverted(false);
 
         //sets motor controllers following leaders
-        //leftBackMotorController.follow(leftFrontMotorController);
+        leftBackMotorController.follow(leftFrontMotorController);
         rightBackMotorController.follow(rightFrontMotorController);
-
-        //myRobot = new DifferentialDrive(leftFrontMotorController, rightFrontMotorControllefr);
 
         turnController = new PIDController(kP, kI, kD);
         turnController.enableContinuousInput(-180.0f, 180.0f);
@@ -124,38 +81,10 @@ public class DriveTrain extends SubsystemBase {
 
     
 
-    
-
     @Override
     public void periodic() {
+        System.out.println("Eleven!");
         // This method will be called once per scheduler run
-
-        // currentAngle = ahrs.getAngle();
-        // targetAngle = Robot.targetAngle;
-
-        // double error = targetAngle - currentAngle;
-
-        // outputSpeed = kP * error;
-
-        // robotAngle.setDouble(ahrs.getAngle());
-        // SmartDashboard.putNumber("Angle", ahrs.getAngle());
-
-
-// 
-        // System.out.println("drive train periodic");
-
-        //SmartDashboard.putNumber("target angle", RobotContainer.m_turnToNAngle.targetAngle);
-
-        // outputSpeed = MathUtil.clamp(outputSpeed, -0.5, 0.5);
-        // setMotors(-outputSpeed, outputSpeed);
-
-
-        // This will get the simulated sensor readings that we set
-        // in the previous article while in simulation, but will use
-        // real values on the robot itself.
-        // finds the position and angle of the robot given gyro and encoders
-
-
     }
 
 
@@ -190,11 +119,11 @@ public class DriveTrain extends SubsystemBase {
 
         leftFrontMotorController.set(-leftSpeed);
         rightFrontMotorController.set(-rightSpeed);
-        leftBackMotorController.set(leftSpeed);
+        // leftBackMotorController.set(leftSpeed);
         System.out.println(leftSpeed);
         System.out.println(rightSpeed);
 
-        // SmartDashboard.putNumber("outputSpeed", leftSpeed);
+        
     }
 
     public static void teleopInit()
@@ -205,22 +134,6 @@ public class DriveTrain extends SubsystemBase {
         rightBackMotorController.setNeutralMode(NeutralMode.Brake);
     }
 
-
-    // public static void teleopInit()
-    // {
-    //     leftFrontMotorController.setIdleMode(CANSparkMax.IdleMode.kCoast);
-    //     rightFrontMotorController.setIdleMode(CANSparkMax.IdleMode.kCoast);
-    //     leftBackMotorController.setIdleMode(CANSparkMax.IdleMode.kCoast);
-    //     rightBackMotorController.setIdleMode(CANSparkMax.IdleMode.kCoast);
-    // }
-
-    // public static void autonomousInit()
-    // {
-    //     leftFrontMotorController.setIdleMode(CANSparkMax.IdleMode.kBrake);
-    //     rightFrontMotorController.setIdleMode(CANSparkMax.IdleMode.kBrake);
-    //     leftBackMotorController.setIdleMode(CANSparkMax.IdleMode.kBrake);
-    //     rightBackMotorController.setIdleMode(CANSparkMax.IdleMode.kBrake);
-    // }
 
 
 }
