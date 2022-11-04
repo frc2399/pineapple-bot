@@ -22,6 +22,7 @@ public class MoveForwardForTime extends CommandBase {
   motorLeftSpeed=motorLeftSpeed1;
   driveTrain=driveTrain1;
   timer=new Timer();
+  //adds the specific subsystem to the command
   addRequirements(driveTrain);
     // Use addRequirements() here to declare subsystem dependencies.
   }

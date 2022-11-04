@@ -12,9 +12,11 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.*;
 import frc.robot.Constants.XboxConstants;
@@ -47,7 +49,20 @@ public class RobotContainer {
    
     // Robot
     private static InstantCommand killCommand = new InstantCommand(() -> CommandScheduler.getInstance().cancelAll());
-    private static MoveForwardForTime moveForwardForTime= new MoveForwardForTime(1, 0.5, 0.5, m_driveTrain);
+    private static MoveForwardForTime moveForwardForTime= new MoveForwardForTime(1, 0.3, 0.3, m_driveTrain);
+    private static SequentialCommandGroup dance = new SequentialCommandGroup(
+        new MoveForwardForTime(3, 0.4, 0.4, m_driveTrain), 
+        new MoveForwardForTime(3, -0.4, -0.4, m_driveTrain),
+        new MoveForwardForTime(0.6, -0.6, 0.6, m_driveTrain),
+        new MoveForwardForTime(3, -0.4, 1, m_driveTrain), // Spin right//
+        new MoveForwardForTime(1, -0.7, -0.7, m_driveTrain), //move backwqards//
+        new MoveForwardForTime(2, 0.4, 0.4, m_driveTrain), //move forward//
+        new MoveForwardForTime(2, 0.4, -0.4, m_driveTrain), //
+        new MoveForwardForTime(0.5, 0.7, -0.4, m_driveTrain), //
+        new MoveForwardForTime(1.2, 0.58, -0.2, m_driveTrain),//
+        new MoveForwardForTime(0.4, 1.6, -0.4, m_driveTrain), //
+        new MoveForwardForTime(0.8, 0.6, -0.6, m_driveTrain) //
+    );
 
 
 
@@ -74,6 +89,7 @@ public class RobotContainer {
 
         SmartDashboard.putNumber("drive slew", XboxConstants.DRIVE_SLEW_RATE);
         SmartDashboard.putNumber("turn slew", XboxConstants.TURN_SLEW_RATE);
+        
 
        
         configureButtonBindings();
@@ -107,6 +123,7 @@ public class RobotContainer {
         // Robot
         new JoystickButton(XBOX, XboxMappingToJoystick.Y_BUTTON).whenPressed(killCommand);
         new JoystickButton(XBOX, XboxMappingToJoystick.A_BUTTON).whenPressed(moveForwardForTime);
+        new JoystickButton(XBOX, XboxMappingToJoystick.X_BUTTON).whenPressed(dance);
 
         // new JoystickButton(XBOX, XboxConstants.TURN_RIGHT).whenPressed(m_turnRight);
     

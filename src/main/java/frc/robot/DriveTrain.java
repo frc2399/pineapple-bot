@@ -83,7 +83,6 @@ public class DriveTrain extends SubsystemBase {
 
     @Override
     public void periodic() {
-        System.out.println("Eleven!");
         // This method will be called once per scheduler run
     }
 
@@ -119,9 +118,8 @@ public class DriveTrain extends SubsystemBase {
 
         leftFrontMotorController.set(-leftSpeed);
         rightFrontMotorController.set(-rightSpeed);
-        // leftBackMotorController.set(leftSpeed);
-        System.out.println(leftSpeed);
-        System.out.println(rightSpeed);
+        leftBackMotorController.set(leftSpeed);
+       
 
         
     }
