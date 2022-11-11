@@ -2,19 +2,32 @@ package frc.robot;
 
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.SimGyro;
+
+import org.photonvision.SimVisionSystem;
+import org.photonvision.SimVisionTarget;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.RobotController;
+
 
 /**
  here's the drive train class that operates the drive train
@@ -42,6 +55,10 @@ public class DriveTrain extends SubsystemBase {
 
     private DifferentialDriveOdometry odometry;
     private DifferentialDrivetrainSim driveSim;
+    private SimVisionSystem simVision;
+    public SimEncoder leftEncoderSim;
+    public SimEncoder rightEncoderSim;
+    public SimGyro gyroSim;
     private Field2d field = new Field2d();
     final ShuffleboardTab tab = Shuffleboard.getTab("Motor Diag");
     public static final NetworkTableEntry angleErrorTolerance = Shuffleboard.getTab("Params").addPersistent("Angle Err Tol", 2).getEntry();
@@ -60,6 +77,7 @@ public class DriveTrain extends SubsystemBase {
         leftFrontMotorController.setInverted(true);
         rightFrontMotorController.setInverted(false);
 
+
         //sets motor controllers following leaders
         leftBackMotorController.follow(leftFrontMotorController);
         rightBackMotorController.follow(rightFrontMotorController);
@@ -71,18 +89,53 @@ public class DriveTrain extends SubsystemBase {
 
         // this code is instantiating the simulated sensors and actuators when the robot is in simulation
        
-            field = new Field2d();
-
             // Ethan is suspicious and thinks we need to re-enable this but it doesn't matter
-            SmartDashboard.putData("Field", field);
 
-            field.setRobotPose(new Pose2d(9, 6.5, new Rotation2d(3.14/2)));
+            if (RobotBase.isSimulation())
+            {
+                leftEncoderSim = new SimEncoder("Left Drive");
+                rightEncoderSim = new SimEncoder("Right Drive");
+                gyroSim = new SimGyro("NavX");
+                odometry = new DifferentialDriveOdometry(gyroSim.getAngle(), new Pose2d(9, 6.5, new Rotation2d(Math.PI/2)));
+
+                driveSim = new DifferentialDrivetrainSim(
+                    DCMotor.getNEO(3), 
+                    8, 
+                    6, 
+                    Units.lbsToKilograms(140), 
+                    Units.inchesToMeters(2.1), 
+                    Units.inchesToMeters(27.811), 
+                    VecBuilder.fill(0, 0, 0, 0, 0, 0, 0));
+
+                    simVision = new SimVisionSystem(" Limelight", 75.0, 15.0, new Transform2d(), 0.85, 20, 640, 480, 10);
+                    double targetWidth= Units.inchesToMeters(41.3)-Units.inchesToMeters(6.7);
+                    double targetHeight = Units.inchesToMeters(98.19)-Units.inchesToMeters(81.19);
+                    double tgtXPos = Units.feetToMeters(54);
+                    double tgtyPos= Units.feetToMeters(27/2)- Units.inchesToMeters(43.75) -  Units.inchesToMeters(48/2);
+                    Pose2d farTargetPose = new Pose2d(new Translation2d( tgtXPos, tgtyPos), new Rotation2d(0));
+                    double tgtyPos1= Units.feetToMeters(27/2) + Units.inchesToMeters(43.75) +  Units.inchesToMeters(48/2);
+                    Pose2d farTargetPose1 = new Pose2d(new Translation2d( tgtXPos, tgtyPos1), new Rotation2d(0));
+                    double TARGET_HEIGHT_METERS = Units.inchesToMeters(81.19);
+            
+                    field = new Field2d();
+
+                    field.setRobotPose(new Pose2d(9, 6.5, new Rotation2d(Math.PI/2)));
+                    simVision.addSimVisionTarget(new SimVisionTarget(farTargetPose, TARGET_HEIGHT_METERS, targetWidth, targetHeight));
+                    simVision.addSimVisionTarget(new SimVisionTarget(farTargetPose1, TARGET_HEIGHT_METERS, targetWidth, targetHeight));
+
+                    FieldObject2d target = field.getObject("target 0");
+                    FieldObject2d target1 = field.getObject("target 1");
+                    target.setPose(farTargetPose);
+                    target1.setPose(farTargetPose1);
+                    SmartDashboard.putData("Field", field);
+            }
         }
 
     
 
     @Override
     public void periodic() {
+
         // This method will be called once per scheduler run
     }
 
@@ -95,8 +148,29 @@ public class DriveTrain extends SubsystemBase {
         // the [-1, 1] PWM signal to voltage by multiplying it by the
         // robot controller voltage.
 
+
+
+        odometry.update(
+            new Rotation2d(-gyroSim.getAngle().getRadians()), 
+            leftEncoderSim.getDistance(), 
+            rightEncoderSim.getDistance());
        
-        field.setRobotPose(odometry.getPoseMeters());
+            driveSim.setInputs(
+                leftFrontMotorController.get() * RobotController.getInputVoltage(), 
+                rightFrontMotorController.get() * RobotController.getInputVoltage());
+
+                driveSim.update(0.02);
+
+                leftEncoderSim.setDistance(driveSim.getLeftPositionMeters());
+                leftEncoderSim.setSpeed(driveSim.getLeftVelocityMetersPerSecond());
+                rightEncoderSim.setDistance(driveSim.getRightPositionMeters());
+                rightEncoderSim.setSpeed(driveSim.getRightVelocityMetersPerSecond());
+
+                gyroSim.setAngle(new Rotation2d(-driveSim.getHeading().getRadians()));
+                simVision.processFrame(odometry.getPoseMeters());
+                
+        
+                field.setRobotPose(odometry.getPoseMeters());
 
        
     
