@@ -13,8 +13,10 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+//import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import frc.robot.Constants.DriveConstants;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 
 /**
  here's the drive train class that operates the drive train
@@ -22,10 +24,10 @@ import frc.robot.Constants.DriveConstants;
  */
 public class DriveTrain extends SubsystemBase {
 
-    public static WPI_VictorSPX leftFrontMotorController;
-    private static WPI_VictorSPX rightFrontMotorController;
-    private static WPI_VictorSPX leftBackMotorController;
-    private static WPI_VictorSPX rightBackMotorController;
+    public static VictorSPX leftFrontMotorController;
+    public static VictorSPX rightFrontMotorController;
+    private static VictorSPX leftBackMotorController;
+    private static VictorSPX rightBackMotorController;
     public static PIDController turnController;
     public final double kP = 0.06;
     public final double kPSim = 0.5;
@@ -53,10 +55,10 @@ public class DriveTrain extends SubsystemBase {
 
     public DriveTrain() {
 
-        leftFrontMotorController = new WPI_VictorSPX(DriveConstants.LEFT_FRONT_MOTOR_ID);
-        rightFrontMotorController = new WPI_VictorSPX(DriveConstants.RIGHT_FRONT_MOTOR_ID);
-        leftBackMotorController = new WPI_VictorSPX(DriveConstants.LEFT_BACK_MOTOR_ID);
-        rightBackMotorController = new WPI_VictorSPX(DriveConstants.RIGHT_BACK_MOTOR_ID);
+        leftFrontMotorController = new VictorSPX(DriveConstants.LEFT_FRONT_MOTOR_ID);
+        rightFrontMotorController = new VictorSPX(DriveConstants.RIGHT_FRONT_MOTOR_ID);
+        leftBackMotorController = new VictorSPX(DriveConstants.LEFT_BACK_MOTOR_ID);
+        rightBackMotorController = new VictorSPX(DriveConstants.RIGHT_BACK_MOTOR_ID);
         leftFrontMotorController.setInverted(true);
         rightFrontMotorController.setInverted(false);
 
@@ -116,9 +118,9 @@ public class DriveTrain extends SubsystemBase {
 
     public void setMotors(double leftSpeed, double rightSpeed) {
 
-        leftFrontMotorController.set(-leftSpeed);
-        rightFrontMotorController.set(-rightSpeed);
-        leftBackMotorController.set(leftSpeed);
+        leftFrontMotorController.set(VictorSPXControlMode.PercentOutput, -leftSpeed);
+        rightFrontMotorController.set(VictorSPXControlMode.PercentOutput, -rightSpeed);
+        leftBackMotorController.set(VictorSPXControlMode.PercentOutput, leftSpeed);
        
 
         

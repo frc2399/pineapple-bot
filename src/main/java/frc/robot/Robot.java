@@ -3,6 +3,11 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.util.datalog.DoubleLogEntry;
+
+//import frc.robot.DriveTrain;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -18,6 +23,8 @@ public class Robot extends TimedRobot {
 
     public static double targetAngle = 0.0;
 
+    DoubleLogEntry myDoubleLog;
+
    
 
     /**
@@ -29,6 +36,10 @@ public class Robot extends TimedRobot {
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
         m_robotContainer = RobotContainer.getInstance();
+        DataLogManager.start();
+
+        DataLog log = DataLogManager.getLog();
+        myDoubleLog = new DoubleLogEntry(log, "/my/double");
         // HAL.report(tResourceType.kResourceType_Framework, tInstances.kFramework_RobotBuilder);
         // SmartDashboard.putNumber("Error Tolerance", 3);
 
@@ -87,6 +98,9 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
 
         //DriveTrain.rightFrontMotorController.set(0.3);
+        double leftFrontTemp = DriveTrain.rightFrontMotorController.getTemperature();
+        myDoubleLog.append(leftFrontTemp);
+        //System.out.println(leftFrontTemp);
     }
 
     @Override
