@@ -36,10 +36,10 @@ public class Robot extends TimedRobot {
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
         m_robotContainer = RobotContainer.getInstance();
-        DataLogManager.start();
+        //DataLogManager.start();
 
-        DataLog log = DataLogManager.getLog();
-        myDoubleLog = new DoubleLogEntry(log, "/my/double");
+        //DataLog log = DataLogManager.getLog();
+        //myDoubleLog = new DoubleLogEntry(log, "/my/double");
         // HAL.report(tResourceType.kResourceType_Framework, tInstances.kFramework_RobotBuilder);
         // SmartDashboard.putNumber("Error Tolerance", 3);
 
@@ -98,8 +98,8 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
 
         //DriveTrain.rightFrontMotorController.set(0.3);
-        double leftFrontTemp = DriveTrain.rightFrontMotorController.getTemperature();
-        myDoubleLog.append(leftFrontTemp);
+        //double leftFrontTemp = DriveTrain.rightFrontMotorController.getTemperature();
+        //myDoubleLog.append(leftFrontTemp);
         //System.out.println(leftFrontTemp);
     }
 
