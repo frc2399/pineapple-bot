@@ -63,7 +63,7 @@ public class RobotContainer {
         new MoveForwardForTime(0.4, 1.6, -0.4, m_driveTrain), //
         new MoveForwardForTime(0.8, 0.6, -0.6, m_driveTrain) //
     );
-
+    private static PrintCommand printCommand = new PrintCommand();
 
 
     public static NetworkTableEntry a_value = Shuffleboard.getTab("Params")
@@ -124,7 +124,7 @@ public class RobotContainer {
         new JoystickButton(XBOX, XboxMappingToJoystick.Y_BUTTON).whenPressed(killCommand);
         new JoystickButton(XBOX, XboxMappingToJoystick.A_BUTTON).whenPressed(moveForwardForTime);
         new JoystickButton(XBOX, XboxMappingToJoystick.X_BUTTON).whenPressed(dance);
-
+        new JoystickButton(XBOX, XboxMappingToJoystick.B_BUTTON).whenPressed(printCommand);
         // new JoystickButton(XBOX, XboxConstants.TURN_RIGHT).whenPressed(m_turnRight);
     
         // Intake
