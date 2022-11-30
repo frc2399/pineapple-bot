@@ -50,6 +50,8 @@ public class DriveTrain extends SubsystemBase {
     public static final NetworkTableEntry angleErrorPValue = Shuffleboard.getTab("Params").add("angle err p", 0.01).getEntry();
     public static final NetworkTableEntry encoderTickLeft = Shuffleboard.getTab("Testing").add("tick left", 0).getEntry();
     public static final NetworkTableEntry encoderTickRight = Shuffleboard.getTab("Testing").add("tick right", 0).getEntry();
+    public static final NetworkTableEntry leftSpeedNTE = Shuffleboard.getTab("Testing").add("left robot speed", 0).getEntry();
+    public static final NetworkTableEntry rightSpeedNTE = Shuffleboard.getTab("Testing").add("right robot speed", 0).getEntry();
 
     public DriveTrain() {
 
@@ -58,6 +60,7 @@ public class DriveTrain extends SubsystemBase {
         leftBackMotorController = new WPI_VictorSPX(DriveConstants.LEFT_BACK_MOTOR_ID);
         rightBackMotorController = new WPI_VictorSPX(DriveConstants.RIGHT_BACK_MOTOR_ID);
         leftFrontMotorController.setInverted(true);
+        leftBackMotorController.setInverted(true);
         rightFrontMotorController.setInverted(false);
 
         //sets motor controllers following leaders
@@ -118,9 +121,10 @@ public class DriveTrain extends SubsystemBase {
 
         leftFrontMotorController.set(-leftSpeed);
         rightFrontMotorController.set(-rightSpeed);
-        leftBackMotorController.set(leftSpeed);
+        //leftBackMotorController.set(leftSpeed);
        
-
+        leftSpeedNTE.setDouble(leftSpeed);
+        rightSpeedNTE.setDouble(rightSpeed);
         
     }
 
