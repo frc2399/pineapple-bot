@@ -38,6 +38,9 @@ public class Constants {
 
         public static final double TURN_SENSITIVITY = 0;
 
+        // for outreach events
+        public static final double SLOWING_SPEED = 0.6;
+
     }
 
     public static final class JoystickConstants {

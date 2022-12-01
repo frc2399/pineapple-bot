@@ -119,8 +119,8 @@ public class DriveTrain extends SubsystemBase {
 
     public void setMotors(double leftSpeed, double rightSpeed) {
 
-        leftFrontMotorController.set(-leftSpeed);
-        rightFrontMotorController.set(-rightSpeed);
+        leftFrontMotorController.set(-leftSpeed*Constants.DriveConstants.SLOWING_SPEED);
+        rightFrontMotorController.set(-rightSpeed*Constants.DriveConstants.SLOWING_SPEED);
         //leftBackMotorController.set(leftSpeed);
        
         leftSpeedNTE.setDouble(leftSpeed);
