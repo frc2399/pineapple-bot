@@ -123,7 +123,10 @@ public class DriveTrain extends SubsystemBase {
         leftBackMotorController.set(VictorSPXControlMode.PercentOutput, leftSpeed);
        
 
-        
+        //leftSpeedNTE.setDouble(leftSpeed);
+        //rightSpeedNTE.setDouble(rightSpeed);
+        //System.out.println(leftSpeed);
+
     }
 
     public static void teleopInit()
