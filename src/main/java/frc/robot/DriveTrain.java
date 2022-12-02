@@ -121,7 +121,6 @@ public class DriveTrain extends SubsystemBase {
         leftFrontMotorController.set(VictorSPXControlMode.PercentOutput, -leftSpeed);
         rightFrontMotorController.set(VictorSPXControlMode.PercentOutput, -rightSpeed);
         leftBackMotorController.set(VictorSPXControlMode.PercentOutput, leftSpeed);
-       
 
         //leftSpeedNTE.setDouble(leftSpeed);
         //rightSpeedNTE.setDouble(rightSpeed);

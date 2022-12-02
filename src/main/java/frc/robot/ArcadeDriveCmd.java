@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 // import frc.robot.RobotContainer;
 // import frc.robot.Constants.JoystickConstants;
@@ -67,6 +68,9 @@ public class ArcadeDriveCmd extends CommandBase {
         rightSpeed.setNumber(right);
        // SmartDashboard.putNumber("left speed", left);
        // SmartDashboard.putNumber("right speed", right);
+
+       SmartDashboard.putNumber("realTimeSpeed", realTimeSpeed);
+       SmartDashboard.putNumber("realTimeTurn", realTimeTurn);
 
         this.driveSubsystem.setMotors(left, right);
     }

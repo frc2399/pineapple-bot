@@ -1,9 +1,11 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 
@@ -25,7 +27,10 @@ public class Robot extends TimedRobot {
 
     DoubleLogEntry myDoubleLog;
 
-   
+    public static final NetworkTableEntry pdplb = Shuffleboard.getTab("Testing").add("pdplb", 0).getEntry(); 
+    public static final NetworkTableEntry pdplf = Shuffleboard.getTab("Testing").add("pdplf", 0).getEntry(); 
+    public static final NetworkTableEntry pdprb = Shuffleboard.getTab("Testing").add("pdprb", 0).getEntry(); 
+    public static final NetworkTableEntry pdprf = Shuffleboard.getTab("Testing").add("pdprf2", 0).getEntry();
 
     /**
      * This function is run when the robot is first started up and should be
@@ -42,6 +47,8 @@ public class Robot extends TimedRobot {
         myDoubleLog = new DoubleLogEntry(log, "/my/double");
         // HAL.report(tResourceType.kResourceType_Framework, tInstances.kFramework_RobotBuilder);
         // SmartDashboard.putNumber("Error Tolerance", 3);
+        
+        
 
     }
     /**
@@ -101,6 +108,16 @@ public class Robot extends TimedRobot {
         double leftFrontTemp = DriveTrain.rightFrontMotorController.getTemperature();
         myDoubleLog.append(leftFrontTemp);
         System.out.println(leftFrontTemp);
+
+        // logging current (amps)
+        myDoubleLog.append(RobotContainer.pdp.getCurrent(Constants.PDPPortConstants.LEFT_FRONT));
+        myDoubleLog.append(RobotContainer.pdp.getCurrent(Constants.PDPPortConstants.LEFT_BACK));
+        myDoubleLog.append(RobotContainer.pdp.getCurrent(Constants.PDPPortConstants.RIGHT_FRONT));
+        myDoubleLog.append(RobotContainer.pdp.getCurrent(Constants.PDPPortConstants.RIGHT_BACK));
+        pdplb.setDouble(RobotContainer.pdp.getCurrent(Constants.PDPPortConstants.LEFT_BACK));
+        pdplf.setDouble(RobotContainer.pdp.getCurrent(Constants.PDPPortConstants.LEFT_FRONT));
+        pdprb.setDouble(RobotContainer.pdp.getCurrent(Constants.PDPPortConstants.RIGHT_BACK));
+        pdprf.setDouble(RobotContainer.pdp.getCurrent(Constants.PDPPortConstants.RIGHT_FRONT));
     }
 
     @Override

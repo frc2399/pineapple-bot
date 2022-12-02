@@ -74,7 +74,7 @@ public class RobotContainer {
     public final static ComplexWidget autonChooser = Shuffleboard.getTab("Driver")
     .add("Choose Auton", m_chooser).withWidget(BuiltInWidgets.kSplitButtonChooser).withPosition(0, 4).withSize(9, 1);
 
-    PowerDistribution pdp = new PowerDistribution(0, ModuleType.kCTRE);
+    public static PowerDistribution pdp = new PowerDistribution(0, ModuleType.kCTRE);
 
     // ALWAYS put this last!!!!
     private static RobotContainer m_robotContainer = new RobotContainer();

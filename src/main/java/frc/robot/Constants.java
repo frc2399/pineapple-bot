@@ -212,6 +212,16 @@ public class Constants {
         public static final double TILT_DEGREES = 36;
 
     }
+
+    public static final class PDPPortConstants {
+        
+        public static final int LEFT_FRONT = 0;
+        public static final int RIGHT_FRONT = 14;
+        public static final int LEFT_BACK = 1;
+        public static final int RIGHT_BACK = 15;
+
+    }
+    
 }
 
 
